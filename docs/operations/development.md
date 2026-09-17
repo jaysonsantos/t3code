@@ -144,6 +144,16 @@ DMGs default to the host architecture. Use `--arch` to choose another target and
 to retain packaging files for inspection. Run `vp run dist:desktop:artifact --help` for other
 options.
 
+### Install a local macOS build
+
+`scripts/install-macos-local.sh` builds the macOS artifact, signs it, and replaces the app in
+`/Applications`. It signs with a self-signed certificate that it creates once in the login
+keychain, so every local build keeps the same identity and macOS keeps its keychain items. Pass
+`--identity <name>` to sign with another identity, `--skip-build` to reuse the newest artifact in
+`release/`, and `--force` to replace the app while it runs. The script refuses to replace a running
+app otherwise, and it moves the previous app to `~/.Trash`. Without `cargo` on `PATH`, the build
+runs inside `nix shell nixpkgs#cargo nixpkgs#rustc`.
+
 ### Linux AppImage prerequisites
 
 Build on Linux because the browser-secret helper links against the host's libsecret. Install
